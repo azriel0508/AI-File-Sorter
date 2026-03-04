@@ -50,7 +50,7 @@ Choose ONE category that best fits the file.
 
 Return only the category name.
 """
-    response = client.chat.completion.create(
+    response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         #temperature = 0 is so that we set the Ai to always give us the highest probable answer
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     #Prints out all the files found
     print("\nfel cleaning up your files....\n")
 
-    for file_path in files:
+    for file_path in files[:10]:
         #to get the name ONLY of the file
         file_name = os.path.basename(file_path)
         #Use our function to see whats inside the file (First 500 characters)

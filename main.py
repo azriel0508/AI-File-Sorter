@@ -1,5 +1,6 @@
 #allows us to interact with our files
 import os 
+import shutil #class for moving files and creating folders
 from openai import OpenAI
 
 client = OpenAI()
@@ -30,7 +31,30 @@ def read_file_preview(file_path, char_limit=500):
             return content
     except: #If we get any error we return an empty string
         return ""
-    
+
+#Our main file mover function allowing us to committ the final file organising
+def move_file(file_path, category, base_directory):
+    destination_folder = os.path.join(base_directory, category)
+
+    #Creating the folder if it doesnt exist yet:
+    os.makedirs(destination_folder, exist_ok=True)
+
+    #Get's the path and the actual name of the file
+    file_name = os.path.basename(file_path)
+
+    #With thi file name we create a new path with the new folder created and chosen by AI
+    destination_path = os.path.join(destination_folder, file_name)
+
+    #Skip if already exists
+    if os.path.exists(destination_path):
+        print(f"Skipping {file_name} because it already exists.")
+        return
+
+    #Actually moving the file using the imported shutil library
+    shutil.move(file_path, destination_path)
+
+    print(f"Moved {file_name} -> {category}")
+
 #Our first talk with AI:
 def classify_file(client, instruction, file_name, preview):
 
@@ -81,3 +105,4 @@ if __name__ == "__main__":
         category = classify_file(client, instruction, file_name, preview)
 
         print(f"{file_name} -> {category}")
+        move_file(file_path, category, directory)

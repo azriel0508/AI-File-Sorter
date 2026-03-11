@@ -168,9 +168,19 @@ if __name__ == "__main__":
     instruction = input("How should the files be organised? ")
 
     # ask if we should run in dry-run mode
-    dry_run_input = input("Run in dry-run mode first? (y/n): ").lower()
+    while True:
+        dry_run_input = input("Run in dry-run mode first? (y/n): ").lower()
 
-    dry_run = dry_run_input == "y"
+        if dry_run_input in ["y", "yes"]:
+            dry_run = True
+            break
+
+        elif dry_run_input in ["n", "no"]:
+            dry_run = False
+            break
+
+        else:
+            print("Invalid input. Please enter 'y' or 'n'.")
 
     # get all files from the directory
     files = get_files_in_directory(directory)
